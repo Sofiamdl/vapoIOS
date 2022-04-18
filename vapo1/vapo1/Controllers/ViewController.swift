@@ -6,16 +6,22 @@
 //
 
 import UIKit
+import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
+    @IBOutlet weak var map: MKMapView!
+    var locationManger = CLLocationManager()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         collection.dataSource = self
         collection.delegate = self
+        locationManger.delegate = self
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        locationManger.requestAlwaysAuthorization()
         // Do any additional setup after loading the view.
     }
-    
-    
+        
     @IBOutlet weak var viewBelowCollection: UIView!
     @IBOutlet weak var popUp: UIView!
     
@@ -57,6 +63,11 @@ class ViewController: UIViewController {
             addressLabel.textColor = UIColor.black
             popUp.isHidden = true;
             emptyAllTextFields()
+            
+            setLocation(location: finalAddress.carStop) { (coor) in
+                print(coor!)
+            }
+            
         }
     }
 
@@ -91,6 +102,28 @@ class ViewController: UIViewController {
         emptyTextField(street)
         emptyTextField(number)
         emptyTextField(extra)
+    }
+
+//    func getAddressCordinate(address: String) {
+//        let getCoder = CLGeocoder()
+//        getCoder.geocodeAddressString(address) { (placemarks, error)
+//            in
+//            guard let placemarks = placemarks, let location =
+//                placemarks.first?.location
+//                else {
+//                    print("No Location Found")
+//                    return
+//                }
+//            print(location)
+//        }
+//    }
+    
+    func setLocation(location: String, completion:@escaping((CLLocationCoordinate2D?) -> ())) {
+            let getCoder = CLGeocoder()
+                getCoder.geocodeAddressString(location) { placemarks, error in
+                    let placemark = placemarks?.first
+                    completion(placemark?.location?.coordinate)
+                }
     }
 
 }

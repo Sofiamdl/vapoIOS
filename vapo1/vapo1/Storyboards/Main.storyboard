@@ -193,6 +193,10 @@
                                                                     <action selector="addressButton:" destination="kGf-qu-nCx" eventType="touchUpInside" id="DgW-0U-Sn3"/>
                                                                 </connections>
                                                             </button>
+                                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Dre-Ev-arJ">
+                                                                <rect key="frame" x="201" y="102" width="171" height="104"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            </mapView>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
@@ -361,6 +365,7 @@
                         <outlet property="district" destination="fQM-Ka-0rk" id="TXI-ZS-QjS"/>
                         <outlet property="extra" destination="zcV-21-x5R" id="a7R-OW-z1w"/>
                         <outlet property="layoutHeight" destination="XYX-qV-97M" id="Exg-HM-EL8"/>
+                        <outlet property="map" destination="Dre-Ev-arJ" id="zl9-aN-N6S"/>
                         <outlet property="number" destination="IPd-mk-9D9" id="pqY-9F-46F"/>
                         <outlet property="popUp" destination="hJS-Fi-zRy" id="Z0l-WX-CkI"/>
                         <outlet property="street" destination="gaL-Q8-Kjt" id="bHX-3j-G6V"/>
