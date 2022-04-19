@@ -141,21 +141,20 @@ class ViewController: UIViewController {
         var distancesGraphDuplicate = distancesGraph
         var addressCounter: Int = 1
         var distancesFromAddress: [Double] = []
-        var selfIndex: Int = 0
         print("first", distancesFinalAddress, distancesGraphDuplicate)
         while distancesFinalAddressDuplicate.count > 0 {
             if addressCounter == 1 {
-                (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate)
+                (distancesFromAddress) = removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate)
                 addressCounter += 1
-            } else if addressCounter == 2 {
-                    (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, selfIndex: selfIndex, distancesFromAddress: distancesFromAddress)
+            } else if addressCounter == 2 || addressCounter == 3 {
+                    (distancesFromAddress) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, distancesFromAddress: distancesFromAddress)
                 if distancesFinalAddressDuplicate.count == 2 {
                     addressCounter = 1
                 } else {
                     addressCounter += 1
                 }
             } else {
-                    (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, selfIndex: selfIndex, distancesFromAddress: distancesFromAddress)
+                    (distancesFromAddress) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, distancesFromAddress: distancesFromAddress)
                     addressCounter = 1
                 
             }
@@ -178,16 +177,13 @@ class ViewController: UIViewController {
         return 0
     }
     
-    func indexOfSmallerElement(_ array:[Double],_ selfIndex: Int) -> Int {
-        var min = Double.greatestFiniteMagnitude
-        var indexMin: Int = 0
+    func indexOfSmallerElement(_ array:[Double]) -> Int {
         for i in 0..<array.count {
-            if min < array[i] && i != selfIndex {
-                min = array[i]
-                indexMin = i
+            if array[i] == array.min() {
+                return i
             }
         }
-        return indexMin
+        return 0
     }
 
     func removeElementFromEachArray(index: Int, array: inout [[Double]]) {
@@ -196,22 +192,22 @@ class ViewController: UIViewController {
         }
     }
     
-    func removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card]) -> ([Double], Int) {
+    func removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card]) -> ([Double]) {
         let indexOfBiggerDistance = indexOfBiggerElement(distancesFinalAddressDuplicate)
         distancesFinalAddressDuplicate.remove(at: indexOfBiggerDistance)
         removeElementFromEachArray(index: indexOfBiggerDistance, array: &distancesGraphDuplicate)
         finalRoute.append([cardsDuplicate.remove(at: indexOfBiggerDistance)])
         let distancesFromFirstAddress :[Double] = distancesGraphDuplicate.remove(at: indexOfBiggerDistance)
-        return (distancesFromFirstAddress, indexOfBiggerDistance)
+        return (distancesFromFirstAddress)
     }
     
-    func removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card], selfIndex: Int, distancesFromAddress: [Double]) -> ([Double], Int) {
-        let indexOfSmallerDistance = indexOfSmallerElement(distancesFromAddress, selfIndex)
+    func removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card], distancesFromAddress: [Double]) -> ([Double]) {
+        let indexOfSmallerDistance = indexOfSmallerElement(distancesFromAddress)
         distancesFinalAddressDuplicate.remove(at: indexOfSmallerDistance)
         removeElementFromEachArray(index: indexOfSmallerDistance, array: &distancesGraphDuplicate)
         finalRoute[finalRoute.count-1].append(cardsDuplicate.remove(at: indexOfSmallerDistance))
         let distancesFromAddress :[Double] = distancesGraphDuplicate.remove(at: indexOfSmallerDistance)
-        return (distancesFromAddress, indexOfSmallerDistance)
+        return distancesFromAddress
     }
 
 }
