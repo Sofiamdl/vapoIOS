@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF5EB6D527FB7954008B67B1 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5EB6D427FB7954008B67B1 /* Person.swift */; };
 		BF6F0F5C27F258470005D262 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6F0F5B27F258470005D262 /* Main.storyboard */; };
 		BFA89743280D1A2700A472FC /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA89742280D1A2700A472FC /* Locations.swift */; };
 		BFA89746280DD73700A472FC /* RouteDistanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA89745280DD73700A472FC /* RouteDistanceError.swift */; };
@@ -38,7 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BF5EB6D427FB7954008B67B1 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		BF6F0F5B27F258470005D262 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BFA89742280D1A2700A472FC /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		BFA89745280DD73700A472FC /* RouteDistanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDistanceError.swift; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 		BFA8973D280CA51400A472FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BF5EB6D427FB7954008B67B1 /* Person.swift */,
 				BFBD3EDD27FCD0ED00A8DF11 /* Card.swift */,
 			);
 			path = Models;
@@ -300,7 +297,6 @@
 				BFFB3A1F27EE3A50008672C5 /* ViewController.swift in Sources */,
 				BFA89743280D1A2700A472FC /* Locations.swift in Sources */,
 				BFFB3A1B27EE3A50008672C5 /* AppDelegate.swift in Sources */,
-				BF5EB6D527FB7954008B67B1 /* Person.swift in Sources */,
 				BFFB3A1D27EE3A50008672C5 /* SceneDelegate.swift in Sources */,
 				BFA89746280DD73700A472FC /* RouteDistanceError.swift in Sources */,
 				BFA89749280DD7A200A472FC /* CalculateDistanceError.swift in Sources */,

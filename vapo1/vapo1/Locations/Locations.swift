@@ -35,6 +35,7 @@ class Locations {
     func distanceRoute(_ fromAddressStartPoint: CLPlacemark,
                        to destinyAddressPoint: CLPlacemark,
                        _ distanceRouteCompletionHandler: @escaping (Double?, Error?) -> Void) {
+        
         guard let startCoordinate = fromAddressStartPoint.location,
               let endCoordinate = destinyAddressPoint.location else {
                   distanceRouteCompletionHandler(nil, RouteDistanceError.destinyAddressPointIsNull)
@@ -78,4 +79,5 @@ class Locations {
         }
        
     }
+    
 }

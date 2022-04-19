@@ -65,6 +65,15 @@
                                                                     <constraint firstAttribute="height" constant="179" id="dcI-3R-PAN"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEq-L9-6dM">
+                                                                <rect key="frame" x="284" y="187" width="67" height="31"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <state key="normal" title="Button"/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="CLICK:" destination="kGf-qu-nCx" eventType="touchUpInside" id="gTy-rn-1GL"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -269,8 +278,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Zona" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDh-lD-CLO">
-                                        <rect key="frame" x="14" y="138" width="39" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cidade" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDh-lD-CLO">
+                                        <rect key="frame" x="14" y="138" width="54" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -311,7 +320,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sul" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yJ3-Yt-d3C">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Recife" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yJ3-Yt-d3C">
                                         <rect key="frame" x="14" y="170" width="314" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -356,6 +365,7 @@
                     <connections>
                         <outlet property="addressLabel" destination="hM7-Li-3P9" id="RJa-ga-zaj"/>
                         <outlet property="carStopName" destination="8rJ-Gx-ovf" id="RNi-yR-4Ua"/>
+                        <outlet property="city" destination="yJ3-Yt-d3C" id="ebZ-bK-6V8"/>
                         <outlet property="collection" destination="6IZ-wE-qUg" id="k4b-mJ-Td7"/>
                         <outlet property="collectionHeight" destination="hFb-cV-EZA" id="7su-YI-Zqr"/>
                         <outlet property="district" destination="fQM-Ka-0rk" id="TXI-ZS-QjS"/>
@@ -365,7 +375,6 @@
                         <outlet property="popUp" destination="hJS-Fi-zRy" id="Z0l-WX-CkI"/>
                         <outlet property="street" destination="gaL-Q8-Kjt" id="bHX-3j-G6V"/>
                         <outlet property="viewBelowCollection" destination="msW-dG-jNf" id="rXj-su-lYQ"/>
-                        <outlet property="zone" destination="yJ3-Yt-d3C" id="ebZ-bK-6V8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAg-Ej-LSk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
