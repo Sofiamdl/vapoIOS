@@ -23,11 +23,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var collectionHeight: NSLayoutConstraint!
 
     @IBOutlet weak var carStopName: UITextField!
-    @IBOutlet weak var city: UITextField!
-    @IBOutlet weak var district: UITextField!
-    @IBOutlet weak var street: UITextField!
-    @IBOutlet weak var number: UITextField!
-    @IBOutlet weak var extra: UITextField!
+    @IBOutlet weak var address: UITextField!
+
     
     @IBOutlet weak var collection: UICollectionView!
 
@@ -41,12 +38,12 @@ class ViewController: UIViewController {
     var location: Locations = Locations()
 
     @IBAction func finishRegistration(_ sender: Any) {
-        if (textFieldIsEmpty(carStopName) || textFieldIsEmpty(city) || textFieldIsEmpty(district) || textFieldIsEmpty(street) || textFieldIsEmpty(number) || textFieldIsEmpty(extra)) {
+        if (textFieldIsEmpty(carStopName) || textFieldIsEmpty(address)) {
             return
         } else if (isAddress == false) {
-            location.checkIfAddressExist(carStopName.text!) { (coor, error) in
+            location.checkIfAddressExist(address.text!) { (coor, error) in
                 if coor != nil {
-                    self.cards.append(Card(image: "CarStopImage", carStop: self.carStopName.text! , city: self.city.text!, district: self.district.text!, street: self.street.text!,  number: self.number.text!, extra: self.extra.text!))
+                    self.cards.append(Card(image: "CarStopImage", carStop: self.carStopName.text! , address: self.address.text!))
                     if (self.cards.count != 1) {
                         self.collectionHeight.constant += 111
                         self.layoutHeight.constant += 111
@@ -58,9 +55,9 @@ class ViewController: UIViewController {
                 }
             }
         } else {
-            location.checkIfAddressExist(carStopName.text!) { (coor, error) in
+            location.checkIfAddressExist(address.text!) { (coor, error) in
                 if coor != nil {
-                    self.finalAddress = Card(image: "CarStopImage", carStop: self.carStopName.text! , city: self.city.text!, district: self.district.text!, street: self.street.text!,  number: self.number.text!, extra: self.extra.text!)
+                    self.finalAddress = Card(image: "CarStopImage", carStop: self.carStopName.text! , address: self.address.text!)
                     self.addressLabel.text = self.finalAddress.carStop
                     self.addressLabel.textColor = UIColor.black
                     self.popUp.isHidden = true;
@@ -73,6 +70,7 @@ class ViewController: UIViewController {
         }
     }
 
+  
     @IBAction func addressButton(_ sender: Any) {
         isAddress = true;
         popUp.isHidden = false;
@@ -83,6 +81,13 @@ class ViewController: UIViewController {
         popUp.isHidden = false;
     }
 
+    @IBAction func SOTESTANDO(_ sender: UIButton) {
+    }
+    @IBAction func calculateRoutes(_ sender: UIButton) {
+        makeArrayOfDistances() { (distancesGraph, distancesFinalAddress) in
+            print(self.routeAlgorithm(distancesGraph, distancesFinalAddress))
+                   }
+    }
     func textFieldIsEmpty(_ textField: UITextField) -> Bool {
         
         let newTextField  = textField.text ?? ""
@@ -97,37 +102,117 @@ class ViewController: UIViewController {
         textField.text = ""
     }
 
-    @IBAction func CLICK(_ sender: UIButton) {
-        print(makeArrayOfDistances())
-    }
     func emptyAllTextFields() {
         emptyTextField(carStopName)
-        emptyTextField(city)
-        emptyTextField(district)
-        emptyTextField(street)
-        emptyTextField(number)
-        emptyTextField(extra)
+        emptyTextField(address)
     }
     
-    func makeArrayOfDistances() -> [[Double]] {
-        var addressGraph: [[Double]] = []
+    func makeArrayOfDistances(completion:@escaping((([[Double]],[Double])) -> ())) {
+        var distancesGraph: [[Double]] = []
+        var distancesFinalAddress : [Double] = []
         let group = DispatchGroup()
 
         for mainAddressIndex in 0..<cards.count {
-            addressGraph.append([])
+            distancesGraph.append([])
+            distancesFinalAddress.append(0)
             for i in 0..<cards.count {
-                addressGraph[mainAddressIndex].append(0.0)
+                distancesGraph[mainAddressIndex].append(0.0)
                 group.enter()
-                location.distanceBetween(between: cards[mainAddressIndex].carStop, and: cards[i].carStop) { (coor, error) in
-                        addressGraph[mainAddressIndex][i] = (coor!)
+                location.distanceBetween(between: cards[mainAddressIndex].address, and: cards[i].address) { (coor, error) in
+                        distancesGraph[mainAddressIndex][i] = (coor!)
                     group.leave()
                     }
+            }
+            group.enter()
+            location.distanceBetween(between: cards[mainAddressIndex].address, and: finalAddress.address) { (coor, error) in
+                    distancesFinalAddress[mainAddressIndex] = (coor!)
+                group.leave()
+                }
+        }
+        group.notify(queue: .main, execute: {
+            completion((distancesGraph, distancesFinalAddress))
+            })
+    }
+    
+    func routeAlgorithm(_ distancesGraph:[[Double]],_ distancesFinalAddress:[Double]) -> [[Card]] {
+        var finalRoute: [[Card]] = []
+        var cardsDuplicate = cards
+        var distancesFinalAddressDuplicate = distancesFinalAddress
+        var distancesGraphDuplicate = distancesGraph
+        var addressCounter: Int = 1
+        var distancesFromAddress: [Double] = []
+        var selfIndex: Int = 0
+        print("first", distancesFinalAddress, distancesGraphDuplicate)
+        while distancesFinalAddressDuplicate.count > 0 {
+            if addressCounter == 1 {
+                (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate)
+                addressCounter += 1
+            } else if addressCounter == 2 {
+                    (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, selfIndex: selfIndex, distancesFromAddress: distancesFromAddress)
+                if distancesFinalAddressDuplicate.count == 2 {
+                    addressCounter = 1
+                } else {
+                    addressCounter += 1
+                }
+            } else {
+                    (distancesFromAddress, selfIndex) = removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate, selfIndex: selfIndex, distancesFromAddress: distancesFromAddress)
+                    addressCounter = 1
                 
             }
+            print(addressCounter, distancesFromAddress)
+            print(addressCounter, distancesFinalAddressDuplicate)
+            print(addressCounter, distancesGraphDuplicate)
+            print(addressCounter, cardsDuplicate)
+
+
         }
-        return(addressGraph)
+        return finalRoute
+    }
+    
+    func indexOfBiggerElement(_ array:[Double]) -> Int {
+        for i in 0..<array.count {
+            if array[i] == array.max() {
+                return i
+            }
+        }
+        return 0
+    }
+    
+    func indexOfSmallerElement(_ array:[Double],_ selfIndex: Int) -> Int {
+        var min = Double.greatestFiniteMagnitude
+        var indexMin: Int = 0
+        for i in 0..<array.count {
+            if min < array[i] && i != selfIndex {
+                min = array[i]
+                indexMin = i
+            }
+        }
+        return indexMin
     }
 
+    func removeElementFromEachArray(index: Int, array: inout [[Double]]) {
+        for i in 0..<array.count {
+            array[i].remove(at: index)
+        }
+    }
+    
+    func removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card]) -> ([Double], Int) {
+        let indexOfBiggerDistance = indexOfBiggerElement(distancesFinalAddressDuplicate)
+        distancesFinalAddressDuplicate.remove(at: indexOfBiggerDistance)
+        removeElementFromEachArray(index: indexOfBiggerDistance, array: &distancesGraphDuplicate)
+        finalRoute.append([cardsDuplicate.remove(at: indexOfBiggerDistance)])
+        let distancesFromFirstAddress :[Double] = distancesGraphDuplicate.remove(at: indexOfBiggerDistance)
+        return (distancesFromFirstAddress, indexOfBiggerDistance)
+    }
+    
+    func removeCardsAndDistancesOfSecondeAndThirdAddress(distancesFinalAddressDuplicate: inout [Double], distancesGraphDuplicate: inout [[Double]], finalRoute: inout [[Card]], cardsDuplicate: inout [Card], selfIndex: Int, distancesFromAddress: [Double]) -> ([Double], Int) {
+        let indexOfSmallerDistance = indexOfSmallerElement(distancesFromAddress, selfIndex)
+        distancesFinalAddressDuplicate.remove(at: indexOfSmallerDistance)
+        removeElementFromEachArray(index: indexOfSmallerDistance, array: &distancesGraphDuplicate)
+        finalRoute[finalRoute.count-1].append(cardsDuplicate.remove(at: indexOfSmallerDistance))
+        let distancesFromAddress :[Double] = distancesGraphDuplicate.remove(at: indexOfSmallerDistance)
+        return (distancesFromAddress, indexOfSmallerDistance)
+    }
 
 }
 
