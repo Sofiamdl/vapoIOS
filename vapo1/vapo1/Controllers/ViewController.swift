@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     var isAddress: Bool = false
     
     var finalAddress: Card!
+    
+    var location: Locations = Locations()
 
     @IBAction func finishRegistration(_ sender: Any) {
         if (textFieldIsEmpty(carStopName) || textFieldIsEmpty(zone) || textFieldIsEmpty(district) || textFieldIsEmpty(street) || textFieldIsEmpty(number) || textFieldIsEmpty(extra)) {
@@ -57,6 +59,12 @@ class ViewController: UIViewController {
             addressLabel.textColor = UIColor.black
             popUp.isHidden = true;
             emptyAllTextFields()
+            location.checkIfAddressExist(finalAddress.carStop) { (coor, error) in
+                print(coor)
+            }
+//            location.distanceBetween(between: finalAddress.carStop, and: cards[0].carStop) { (coor, error) in
+//               print(coor!)
+//            }
         }
     }
 
