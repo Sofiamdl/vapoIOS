@@ -9,9 +9,11 @@ import Foundation
 
 class Car {
     let stops: [Card]
-
-    init(stops: [Card]){
+    let title: String
+    init(stops: [Card], title:String){
         self.stops = stops
+        self.title = title
         
     }
 }
+

@@ -12,6 +12,9 @@
 		BFA89746280DD73700A472FC /* RouteDistanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA89745280DD73700A472FC /* RouteDistanceError.swift */; };
 		BFA89749280DD7A200A472FC /* CalculateDistanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA89748280DD7A200A472FC /* CalculateDistanceError.swift */; };
 		BFA8974C280F4D8100A472FC /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA8974B280F4D8100A472FC /* Car.swift */; };
+		BFA8974E280F74A100A472FC /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA8974D280F74A100A472FC /* Collections.swift */; };
+		BFA89750280F7CF500A472FC /* CarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA8974F280F7CF500A472FC /* CarCell.swift */; };
+		BFA89752280F8FCD00A472FC /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA89751280F8FCD00A472FC /* AddressCell.swift */; };
 		BFBD3EDC27FCCF8C00A8DF11 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBD3EDB27FCCF8C00A8DF11 /* CardCell.swift */; };
 		BFBD3EDE27FCD0ED00A8DF11 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBD3EDD27FCD0ED00A8DF11 /* Card.swift */; };
 		BFFB3A1B27EE3A50008672C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFB3A1A27EE3A50008672C5 /* AppDelegate.swift */; };
@@ -43,6 +46,9 @@
 		BFA89745280DD73700A472FC /* RouteDistanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDistanceError.swift; sourceTree = "<group>"; };
 		BFA89748280DD7A200A472FC /* CalculateDistanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateDistanceError.swift; sourceTree = "<group>"; };
 		BFA8974B280F4D8100A472FC /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
+		BFA8974D280F74A100A472FC /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
+		BFA8974F280F7CF500A472FC /* CarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarCell.swift; sourceTree = "<group>"; };
+		BFA89751280F8FCD00A472FC /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		BFBD3EDB27FCCF8C00A8DF11 /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 		BFBD3EDD27FCD0ED00A8DF11 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		BFFB3A1727EE3A50008672C5 /* vapo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vapo1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +91,7 @@
 			children = (
 				BFBD3EDD27FCD0ED00A8DF11 /* Card.swift */,
 				BFA8974B280F4D8100A472FC /* Car.swift */,
+				BFA8974D280F74A100A472FC /* Collections.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -101,6 +108,8 @@
 			isa = PBXGroup;
 			children = (
 				BFBD3EDB27FCCF8C00A8DF11 /* CardCell.swift */,
+				BFA8974F280F7CF500A472FC /* CarCell.swift */,
+				BFA89751280F8FCD00A472FC /* AddressCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -300,10 +309,13 @@
 				BFFB3A1F27EE3A50008672C5 /* ViewController.swift in Sources */,
 				BFA89743280D1A2700A472FC /* Locations.swift in Sources */,
 				BFFB3A1B27EE3A50008672C5 /* AppDelegate.swift in Sources */,
+				BFA89750280F7CF500A472FC /* CarCell.swift in Sources */,
 				BFA8974C280F4D8100A472FC /* Car.swift in Sources */,
 				BFFB3A1D27EE3A50008672C5 /* SceneDelegate.swift in Sources */,
 				BFA89746280DD73700A472FC /* RouteDistanceError.swift in Sources */,
 				BFA89749280DD7A200A472FC /* CalculateDistanceError.swift in Sources */,
+				BFA89752280F8FCD00A472FC /* AddressCell.swift in Sources */,
+				BFA8974E280F74A100A472FC /* Collections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

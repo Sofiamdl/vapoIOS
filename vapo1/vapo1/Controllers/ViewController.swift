@@ -12,13 +12,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         collection.dataSource = self
         collection.delegate = self
+        
+        carsCollection.dataSource = self
+        carsCollection.delegate = self
+        
         // Do any additional setup after loading the view.
     }
     
+
+    @IBOutlet weak var routePopUp: UIView!
+    @IBOutlet weak var carsCollection: UICollectionViewCar!
     
     @IBOutlet weak var viewBelowCollection: UIView!
     @IBOutlet weak var popUp: UIView!
     
+    @IBOutlet weak var adressInfoAddress: UILabel!
     @IBOutlet weak var layoutHeight: NSLayoutConstraint!
     @IBOutlet weak var collectionHeight: NSLayoutConstraint!
 
@@ -31,10 +39,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var addressLabel: UILabel!
     var cards: [Card] = []
 
+    var route: [[Card]] = []
+
+    @IBOutlet weak var backgroundView: UIView!
     var isAddress: Bool = false
     
     var finalAddress: Card!
-    
+        
     var location: Locations = Locations()
 
     @IBAction func finishRegistration(_ sender: Any) {
@@ -50,6 +61,7 @@ class ViewController: UIViewController {
                         
                     }
                     self.popUp.isHidden = true;
+                    self.makeBackgroundViewDisappear()
                     self.emptyAllTextFields()
                     self.collection.reloadData()
                 }
@@ -59,14 +71,14 @@ class ViewController: UIViewController {
                 if coor != nil {
                     self.finalAddress = Card(image: "CarStopImage", carStop: self.carStopName.text! , address: self.address.text!)
                     self.addressLabel.text = self.finalAddress.carStop
+                    self.adressInfoAddress.text = self.finalAddress.address
                     self.addressLabel.textColor = UIColor.black
                     self.popUp.isHidden = true;
+                    self.makeBackgroundViewDisappear()
                     self.emptyAllTextFields()
                 }
             }
-//            location.distanceBetween(between: finalAddress.carStop, and: cards[0].carStop) { (coor, error) in
-//               print(coor!)
-//            }
+
         }
     }
 
@@ -74,20 +86,32 @@ class ViewController: UIViewController {
     @IBAction func addressButton(_ sender: Any) {
         isAddress = true;
         popUp.isHidden = false;
+        makeBackgroundViewAppear()
     }
 
     @IBAction func openPopUp(_ sender: Any) {
         isAddress = false;
         popUp.isHidden = false;
+        makeBackgroundViewAppear()
     }
 
-    @IBAction func SOTESTANDO(_ sender: UIButton) {
-    }
     @IBAction func calculateRoutes(_ sender: UIButton) {
         makeArrayOfDistances() { (distancesGraph, distancesFinalAddress) in
-            print(self.routeAlgorithm(distancesGraph, distancesFinalAddress))
+            self.routeAlgorithm(distancesGraph, distancesFinalAddress)
+//            print(self.carStopsArray)
+            self.carsCollection.reloadData()
+            self.makeBackgroundViewAppear()
+            self.routePopUp.isHidden = false
+            
                    }
     }
+    
+    @IBAction func recalculate(_ sender: UIButton) {
+        self.routePopUp.isHidden = true
+        makeBackgroundViewDisappear()
+        carStopsArray = []
+    }
+    
     func textFieldIsEmpty(_ textField: UITextField) -> Bool {
         
         let newTextField  = textField.text ?? ""
@@ -134,6 +158,9 @@ class ViewController: UIViewController {
             })
     }
     
+//    var carStopsArray: [Car] = [Car(stops:[Card(image: "CarStopImage", carStop: "fodase" , address: "fodase"), Card(image: "CarStopImage", carStop: "fodase" , address: "fodase"), Card(image: "CarStopImage", carStop: "fodase" , address: "fodase")], title: "fodase"), ]
+    var carStopsArray: [Car] = []
+    
     func routeAlgorithm(_ distancesGraph:[[Double]],_ distancesFinalAddress:[Double]) -> [[Card]] {
         var finalRoute: [[Card]] = []
         var cardsDuplicate = cards
@@ -141,7 +168,7 @@ class ViewController: UIViewController {
         var distancesGraphDuplicate = distancesGraph
         var addressCounter: Int = 1
         var distancesFromAddress: [Double] = []
-        print("first", distancesFinalAddress, distancesGraphDuplicate)
+//        print("first", distancesFinalAddress, distancesGraphDuplicate)
         while distancesFinalAddressDuplicate.count > 0 {
             if addressCounter == 1 {
                 (distancesFromAddress) = removeCardsAndDistancesOfFirstAddress(distancesFinalAddressDuplicate: &distancesFinalAddressDuplicate, distancesGraphDuplicate: &distancesGraphDuplicate, finalRoute: &finalRoute, cardsDuplicate: &cardsDuplicate)
@@ -158,12 +185,16 @@ class ViewController: UIViewController {
                     addressCounter = 1
                 
             }
-            print(addressCounter, distancesFromAddress)
-            print(addressCounter, distancesFinalAddressDuplicate)
-            print(addressCounter, distancesGraphDuplicate)
-            print(addressCounter, cardsDuplicate)
+//            print(addressCounter, distancesFromAddress)
+//            print(addressCounter, distancesFinalAddressDuplicate)
+//            print(addressCounter, distancesGraphDuplicate)
+//            print(addressCounter, cardsDuplicate)
 
 
+        }
+        
+        for i in 0..<finalRoute.count {
+            carStopsArray.append(Car(stops: finalRoute[i], title: "Carro " + String(i+1)))
         }
         return finalRoute
     }
@@ -209,21 +240,44 @@ class ViewController: UIViewController {
         let distancesFromAddress :[Double] = distancesGraphDuplicate.remove(at: indexOfSmallerDistance)
         return distancesFromAddress
     }
+    
+    func makeBackgroundViewAppear() {
+        backgroundView.backgroundColor = UIColor(white:0, alpha: 0.5)
+        backgroundView.isHidden = false
+    }
+    
+    func makeBackgroundViewDisappear() {
+        backgroundView.isHidden = true
+    }
 
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     // qntd celulas
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cards.count
+        if collectionView == self.carsCollection {
+            return carStopsArray.count
+        } else {
+            return cards.count
+        }
     }
     
     //desenhar celulas
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Card", for: indexPath) as! CardCell
-        let card = cards[indexPath.row]
-        cell.draw(card)
-        return cell
+        if collectionView == self.carsCollection {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Car", for: indexPath) as! CarCell
+            let card = carStopsArray[indexPath.row]
+            cell.draw(card)
+            cell.collection.delegate = cell
+            cell.collection.dataSource = cell
+            return cell
+
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Card", for: indexPath) as! CardCell
+                let card = cards[indexPath.row]
+                cell.draw(card)
+                return cell
+            }
     }
     
 }
